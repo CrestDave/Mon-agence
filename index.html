@@ -3,306 +3,187 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DOKLADSERVIS SK - Oficiálny portál</title>
+    <title>DOKLADSERVIS SK</title>
     <style>
         :root {
             --primary: #051c33;
-            --accent: #0066cc;
-            --success: #00FF00; /* Vert Pur */
-            --error: #cc0000;
-            --text-main: #1a1a1a;
+            --success: #28a745;
+            --bg-gradient: linear-gradient(180deg, #F0F2F5 0%, #051c33 100%);
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            /* Dégradé professionnel gris vers bleu nuit */
-            background: linear-gradient(180deg, #F0F2F5 0%, #051c33 100%);
+            margin: 0; padding: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: var(--bg-gradient);
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-main);
-            font-size: 18px; /* Taille globale élevée */
+            display: flex; align-items: center; justify-content: center;
+            color: #1a1a1a;
+            font-size: 16px; /* Taille réduite pour éviter le chevauchement */
         }
 
         .container {
-            width: 95%;
-            max-width: 550px;
-            background: rgba(255, 255, 255, 0.98);
-            padding: 40px 30px;
+            width: 92%; max-width: 480px;
+            background: white;
+            padding: 30px 20px;
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
             text-align: center;
-            position: relative;
-            overflow: hidden;
         }
 
-        /* Animation du Titre */
+        /* Titre Animé */
         .agency-name {
-            font-size: 32px;
-            font-weight: 800;
-            color: var(--primary);
-            margin: 0;
-            letter-spacing: 1px;
-            text-shadow: 0 0 10px rgba(0, 102, 204, 0.3);
-            animation: pulseGlow 3s infinite ease-in-out;
+            font-size: 26px; font-weight: 800; color: var(--primary);
+            margin: 0; text-shadow: 0 0 8px rgba(0,102,204,0.2);
+            animation: pulse 3s infinite;
         }
-        @keyframes pulseGlow {
-            0%, 100% { text-shadow: 0 0 5px rgba(0, 102, 204, 0.2); transform: scale(1); }
-            50% { text-shadow: 0 0 20px rgba(0, 102, 204, 0.6); transform: scale(1.02); }
-        }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.02); } }
 
-        .ico-number {
-            font-size: 16px;
-            font-weight: bold;
-            color: #666;
-            margin-bottom: 25px;
-        }
+        .ico-text { font-size: 14px; color: #666; margin-bottom: 20px; font-weight: bold; }
 
-        .long-text {
-            text-align: justify;
-            line-height: 1.7;
-            margin-bottom: 30px;
-            color: #444;
-            font-size: 17px;
-        }
+        .justified-text { text-align: justify; line-height: 1.5; font-size: 15px; color: #444; margin-bottom: 20px; }
 
-        /* Case de Code avec Cadenas Fixe */
-        .input-wrapper {
-            position: relative;
-            margin-bottom: 25px;
+        /* Input avec Cadenas */
+        .input-box {
+            position: relative; margin-bottom: 20px;
         }
-        .input-wrapper span {
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 24px;
-            color: var(--primary);
-            border-right: 1px solid #ddd;
-            padding-right: 15px;
+        .input-box span {
+            position: absolute; left: 15px; top: 50%; transform: translateY(-50%);
+            font-size: 20px; border-right: 1px solid #ddd; padding-right: 10px;
         }
         input {
-            width: 100%;
-            padding: 20px 20px 20px 70px;
-            font-size: 22px;
-            font-weight: bold;
-            border: 2px solid #ced4da;
-            border-radius: 12px;
-            background: #fff;
-            color: var(--primary);
-            letter-spacing: 1px;
-            transition: border-color 0.3s;
-        }
-        input:focus {
-            outline: none;
-            border-color: var(--accent);
+            width: 100%; padding: 15px 15px 15px 60px;
+            font-size: 18px; border: 2px solid #ddd; border-radius: 10px;
         }
 
-        .btn-main {
-            width: 100%;
-            padding: 22px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            font-size: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-            text-transform: uppercase;
+        .btn-blue {
+            width: 100%; padding: 18px; background: var(--primary);
+            color: white; border: none; border-radius: 50px;
+            font-size: 18px; font-weight: bold; cursor: pointer;
         }
-        .btn-main:active { transform: scale(0.98); background: var(--accent); }
 
-        /* Animation Point Vert */
-        .search-overlay {
-            display: none;
-            margin-top: 30px;
+        /* Le Point Vert Officiel */
+        .check-icon {
+            width: 70px; height: 70px; background: var(--success);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 15px; color: white; font-size: 35px;
+            box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
         }
-        .scanner-line {
-            width: 100%;
-            height: 4px;
-            background: #eee;
-            position: relative;
-            overflow: hidden;
-            border-radius: 2px;
+
+        /* Scanner Point Vert */
+        .loader { display: none; margin-top: 20px; }
+        .dot-scan {
+            width: 100%; height: 4px; background: #eee;
+            position: relative; overflow: hidden; border-radius: 2px;
         }
-        .green-dot {
-            width: 25px;
-            height: 100%;
-            background: var(--success);
-            box-shadow: 0 0 15px var(--success);
-            position: absolute;
-            animation: scan 1.5s infinite ease-in-out;
+        .dot {
+            width: 20px; height: 100%; background: #00FF00;
+            position: absolute; animation: move 1.5s infinite;
+            box-shadow: 0 0 10px #00FF00;
         }
-        @keyframes scan {
-            0% { left: -20%; }
-            100% { left: 120%; }
+        @keyframes move { 0% { left: -10%; } 100% { left: 110%; } }
+
+        /* Carte de données */
+        .data-card {
+            background: #fdfdfd; border: 1px solid #eee;
+            border-radius: 12px; padding: 15px; text-align: left; margin: 20px 0;
+        }
+        .data-row {
+            display: flex; justify-content: space-between;
+            padding: 12px 0; border-bottom: 1px dotted #ccc;
+            font-size: 15px; /* Réduit pour mobile */
+        }
+        .data-label { font-weight: bold; color: #333; }
+        .data-val { color: var(--primary); font-weight: 600; text-align: right; }
+
+        .pdf-link {
+            display: block; margin: 20px 0; color: #0066cc;
+            font-weight: bold; font-size: 16px; text-decoration: underline;
         }
 
         .hidden { display: none; }
 
-        /* Page Résultat */
-        .data-card {
-            background: #f8f9fa;
-            border: 1px solid #e9ecef;
-            border-radius: 12px;
-            padding: 25px;
-            margin: 25px 0;
-            text-align: left;
-        }
-        .data-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 15px 0;
-            border-bottom: 1px solid #eee;
-            font-size: 19px;
-        }
-        .pdf-link {
-            display: block;
-            margin: 30px 0;
-            color: var(--accent);
-            font-weight: 800;
-            font-size: 21px;
-            text-decoration: underline;
-        }
-
-        /* Sécurité Anti-Pirate */
-        #security-screen {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: black;
-            color: white;
-            z-index: 10000;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 20px;
+        #security-cover {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: black; z-index: 10000; color: white;
+            flex-direction: column; align-items: center; justify-content: center;
         }
     </style>
 </head>
-<body oncontextmenu="return false;"> <div id="security-screen">
-        <h1>BEZPEČNOSTNÉ UPOZORNENIE</h1>
-        <p id="security-msg">Prístup k vývojárskym nástrojom je na tomto portáli zakázaný.</p>
-        <p style="color: #666; margin-top: 20px;">Zatvorte nástroje a obnovte stránku (F5).</p>
+<body oncontextmenu="return false;">
+
+    <div id="security-cover">
+        <h2>🔒 BEZPEČNOSŤ</h2>
+        <p>Prístup odmietnutý.</p>
     </div>
 
     <div class="container">
-        <div id="page1">
+        <div id="p1">
             <p class="agency-name">DOKLADSERVIS SK</p>
-            <p class="ico-number">IČO: 51234567</p>
-            
-            <div class="long-text">
-                Vitajte v oficiálnom overovacom portáli DOKLADSERVIS SK. Tento systém slúži na digitálnu autorizáciu a prístup k chráneným záznamom v centrálnom registri. Prosíme, zadajte váš unikátny identifikačný kód, ktorý vám bol pridelený v úradnej korešpondencii. Všetky prenosy dát sú šifrované a monitorované pre zaistenie bezpečnosti vašich osobných údajov. Upozorňujeme, že akýkoľvek neoprávnený prístup je monitorovaný.
+            <p class="ico-text">IČO: 51234567</p>
+            <div class="justified-text">
+                Vitajte v oficiálnom overovacom portáli DOKLADSERVIS SK. Tento systém slúži na digitálnu autorizáciu a prístup k chráneným záznamom v centrálnom registri. Prosíme, zadajte váš unikátny identifikačný kód.
             </div>
-
-            <div class="input-wrapper">
+            <div class="input-box">
                 <span>🔒</span>
-                <input type="text" id="verifyCode" placeholder="Zadajte kód...">
+                <input type="text" id="codeIn" placeholder="Zadajte kód...">
             </div>
-
-            <button class="btn-main" id="mainBtn" onclick="handleAuth()">AUTORIZOVAŤ PRÍSTUP</button>
-
-            <div class="search-overlay" id="loader">
-                <div class="scanner-line"><div class="green-dot"></div></div>
-                <p id="status-text" style="font-weight: bold; margin-top: 15px;">Prebieha vyhľadávanie spisu v oficiálnom systéme...</p>
+            <button class="btn-blue" id="btnGo" onclick="start()">AUTORIZOVAŤ PRÍSTUP</button>
+            <div class="loader" id="loading">
+                <div class="dot-scan"><div class="dot"></div></div>
+                <p style="font-size:13px; font-weight:bold;">Prebieha vyhľadávanie spisu...</p>
             </div>
-            <p id="errorMsg" style="color:var(--error); font-weight:bold; display:none; margin-top:20px;"></p>
+            <p id="err" style="color:red; display:none; font-size:14px; margin-top:10px;">Kód nebol nájdený.</p>
         </div>
 
-        <div id="page2" class="hidden">
-            <div style="font-size: 60px; color: var(--success); margin-bottom: 10px;">✓</div>
-            <h2 style="color: var(--primary); margin: 0;">ZÁZNAM NÁJDENÝ</h2>
-            
+        <div id="p2" class="hidden">
+            <div class="check-icon">✓</div>
+            <h2 style="margin:0; color:var(--primary); font-size:22px;">ZÁZNAM NÁJDENÝ</h2>
             <div class="data-card">
-                <div class="data-row"><strong>Meno:</strong> <span>Zuzana Nováková</span></div>
-                <div class="data-row"><strong>ID konania:</strong> <span>SK-DS-2025-8412</span></div>
-                <div class="data-row"><strong>Miesto:</strong> <span>Bratislava, Slovensko</span></div>
-                <div class="data-row"><strong>Dátum:</strong> <span>24.12.2025</span></div>
-                <div class="data-row" style="border:none;"><strong>Stav:</strong> <span style="color:var(--success); font-weight:bold;">SCHVÁLENÉ ✅</span></div>
+                <div class="data-row"><span class="data-label">Meno:</span> <span class="data-val">Zuzana Nováková</span></div>
+                <div class="data-row"><span class="data-label">ID konania:</span> <span class="data-val">SK-DS-2025-8412</span></div>
+                <div class="data-row"><span class="data-label">Miesto:</span> <span class="data-val">Bratislava, SK</span></div>
+                <div class="data-row"><span class="data-label">Dátum:</span> <span class="data-val">24.12.2025</span></div>
+                <div class="data-row" style="border:none;"><span class="data-label">Stav:</span> <span class="data-val" style="color:var(--success)">SCHVÁLENÉ ✅</span></div>
             </div>
-
-            <a href="Potvrdenie_SK.pdf" target="_blank" class="pdf-link">KLIKNITE SEM PRE ZOBRAZENIE VAŠEJ ATESTÁCIE (PDF)</a>
-            <button class="btn-main" style="padding: 15px; font-size: 16px; width: auto;" onclick="toFinal()">POKRAČOVAŤ</button>
+            <a href="Potvrdenie_SK.pdf" target="_blank" class="pdf-link">KLIKNITE SEM PRE ZOBRAZENIE ATESTÁCIE (PDF)</a>
+            <button class="btn-blue" style="width:auto; padding:12px 30px;" onclick="showP3()">POKRAČOVAŤ</button>
         </div>
 
-        <div id="page3" class="hidden">
-            <h2 style="color: var(--primary);">POTVRDENIE DIGITÁLNEJ ZHODY</h2>
-            <div class="long-text">
-                Vážená pani Nováková, proces overenia vašej totožnosti v systéme DOKLADSERVIS SK bol úspešne dokončený. Vaša dokumentácia bola overená a bezpečne uložená v centrálnom registri. V ďalšom kroku vás budeme kontaktovať prostredníctvom vašej registrovanej adresy s podrobnými inštrukciami pre prevzatie fyzických dokladov. Tento digitálny záznam zostáva platný v našej databáze po dobu 30 dní. Ďakujeme za využitie našich digitálnych služieb.
+        <div id="p3" class="hidden">
+            <h2 style="font-size:20px;">POTVRDENIE ZHODY</h2>
+            <div class="justified-text">
+                Vážená pani Nováková, proces overenia bol úspešne dokončený. Vaša dokumentácia bola overená a uložená. V ďalšom kroku vás budeme kontaktovať poštou. Ďakujeme.
             </div>
-            
-            <p style="font-size: 16px; color: #555; border-top: 1px solid #eee; padding-top: 20px;">
-                Pre akúkoľvek zmenu v údajoch nás kontaktujte na:<br>
-                <a href="mailto:skdocumenta@gmail.com" style="color: var(--primary); font-weight: bold; text-decoration: none;">skdocumenta@gmail.com</a>
-            </p>
-            <p style="font-size: 12px; color: #999; margin-top: 30px;">Informačný systém dokladov SK © 2025</p>
+            <p style="font-size:14px; color:#555;">Kontakt: <br><b>skdocumenta@gmail.com</b></p>
+            <p style="font-size:11px; color:#999; margin-top:30px;">DOKLADSERVIS SK © 2025</p>
         </div>
     </div>
 
     <script>
-        let attempts = 0;
-        const LOCK_TIME = 10 * 60 * 1000; // 10 minutes
-
-        // Vérification du blocage au chargement
-        window.onload = function() {
-            const lockUntil = localStorage.getItem('lockUntil');
-            if (lockUntil && Date.now() < lockUntil) {
-                activateSecurity("Prístup dočasne zablokovaný. Skúste to znova o 10 minút.");
+        function start() {
+            const code = document.getElementById('codeIn').value.trim();
+            if(code === 'SK-2025-00-DS') {
+                document.getElementById('btnGo').style.display = 'none';
+                document.getElementById('loading').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('p1').classList.add('hidden');
+                    document.getElementById('p2').classList.remove('hidden');
+                }, 4000);
+            } else {
+                document.getElementById('err').style.display = 'block';
             }
-        };
-
-        function handleAuth() {
-            const code = document.getElementById('verifyCode').value.trim();
-            const loader = document.getElementById('loader');
-            const errorMsg = document.getElementById('errorMsg');
-            const btn = document.getElementById('mainBtn');
-
-            btn.style.display = 'none';
-            errorMsg.style.display = 'none';
-            loader.style.display = 'block';
-
-            setTimeout(() => {
-                if(code === 'SK-2025-00-DS') {
-                    document.getElementById('page1').classList.add('hidden');
-                    document.getElementById('page2').classList.remove('hidden');
-                } else {
-                    attempts++;
-                    loader.style.display = 'none';
-                    btn.style.display = 'block';
-                    errorMsg.innerText = "Systém nenašiel žiadny záznam. Skontrolujte kód a skúste to znova.";
-                    errorMsg.style.display = 'block';
-                    document.getElementById('verifyCode').value = "";
-
-                    if(attempts >= 10) {
-                        const lockDate = Date.now() + LOCK_TIME;
-                        localStorage.setItem('lockUntil', lockDate);
-                        activateSecurity("Prístup zablokovaný kvôli príliš veľa neúspešným pokusom. Skúste to o 10 minút.");
-                    }
-                }
-            }, 5000); // Animation de 5 secondes obligatoires
+        }
+        function showP3() {
+            document.getElementById('p2').classList.add('hidden');
+            document.getElementById('p3').classList.remove('hidden');
         }
 
-        function toFinal() {
-            document.getElementById('page2').classList.add('hidden');
-            document.getElementById('page3').classList.remove('hidden');
-        }
-
-        function activateSecurity(msg) {
-            document.getElementById('security-screen').style.display = 'flex';
-            document.getElementById('security-msg').innerText = msg;
-        }
-
-        // Bouclier Anti-Pirate (Touche F12, Ctrl+Shift+I)
+        // Sécurité
         document.onkeydown = function(e) {
             if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 73)) {
-                activateSecurity("BEZPEČNOSTNÉ UPOZORNENIE: Vývojárske nástroje sú deaktivované.");
+                document.getElementById('security-cover').style.display = 'flex';
                 return false;
             }
         };
