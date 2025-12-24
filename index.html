@@ -8,185 +8,126 @@
         :root {
             --primary: #051c33;
             --success: #28a745;
-            --bg-gradient: linear-gradient(180deg, #F0F2F5 0%, #051c33 100%);
+            --bg: linear-gradient(180deg, #F0F2F5 0%, #051c33 100%);
         }
-
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
         body {
-            margin: 0; padding: 0;
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background: var(--bg-gradient);
-            min-height: 100vh;
+            margin: 0; padding: 0; font-family: 'Arial', sans-serif;
+            background: var(--bg); min-height: 100vh;
             display: flex; align-items: center; justify-content: center;
-            color: #1a1a1a;
-            font-size: 16px; /* Taille réduite pour éviter le chevauchement */
         }
-
         .container {
-            width: 92%; max-width: 480px;
-            background: white;
-            padding: 30px 20px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            text-align: center;
+            width: 92%; max-width: 450px; background: white;
+            padding: 30px 20px; border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3); text-align: center;
         }
+        .agency-title { font-size: 26px; font-weight: 800; color: var(--primary); margin: 0; }
+        .ico-label { font-size: 14px; color: #666; margin: 5px 0 20px; font-weight: bold; }
+        .text-block { text-align: justify; line-height: 1.6; color: #444; font-size: 15px; margin-bottom: 20px; }
+        
+        /* Input Box */
+        .input-group { position: relative; margin-bottom: 20px; }
+        .input-group span { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); font-size: 20px; }
+        input { width: 100%; padding: 15px 15px 15px 50px; font-size: 17px; border: 2px solid #ddd; border-radius: 10px; }
+        
+        .btn-action { width: 100%; padding: 18px; background: var(--primary); color: white; border: none; border-radius: 50px; font-size: 17px; font-weight: bold; cursor: pointer; text-transform: uppercase; }
 
-        /* Titre Animé */
-        .agency-name {
-            font-size: 26px; font-weight: 800; color: var(--primary);
-            margin: 0; text-shadow: 0 0 8px rgba(0,102,204,0.2);
-            animation: pulse 3s infinite;
-        }
-        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.02); } }
+        /* Crochet Officiel (SVG) */
+        .check-icon { width: 70px; height: 70px; background: var(--success); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; }
+        .check-icon svg { width: 40px; height: 40px; fill: white; }
 
-        .ico-text { font-size: 14px; color: #666; margin-bottom: 20px; font-weight: bold; }
+        /* Loader */
+        .loader-box { display: none; margin-top: 20px; }
+        .track { width: 100%; height: 4px; background: #eee; position: relative; overflow: hidden; }
+        .dot { width: 30px; height: 100%; background: #00FF00; position: absolute; animation: scan 1.5s infinite; box-shadow: 0 0 10px #00FF00; }
+        @keyframes scan { 0% { left: -20%; } 100% { left: 120%; } }
 
-        .justified-text { text-align: justify; line-height: 1.5; font-size: 15px; color: #444; margin-bottom: 20px; }
-
-        /* Input avec Cadenas */
-        .input-box {
-            position: relative; margin-bottom: 20px;
-        }
-        .input-box span {
-            position: absolute; left: 15px; top: 50%; transform: translateY(-50%);
-            font-size: 20px; border-right: 1px solid #ddd; padding-right: 10px;
-        }
-        input {
-            width: 100%; padding: 15px 15px 15px 60px;
-            font-size: 18px; border: 2px solid #ddd; border-radius: 10px;
-        }
-
-        .btn-blue {
-            width: 100%; padding: 18px; background: var(--primary);
-            color: white; border: none; border-radius: 50px;
-            font-size: 18px; font-weight: bold; cursor: pointer;
-        }
-
-        /* Le Point Vert Officiel */
-        .check-icon {
-            width: 70px; height: 70px; background: var(--success);
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 15px; color: white; font-size: 35px;
-            box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
-        }
-
-        /* Scanner Point Vert */
-        .loader { display: none; margin-top: 20px; }
-        .dot-scan {
-            width: 100%; height: 4px; background: #eee;
-            position: relative; overflow: hidden; border-radius: 2px;
-        }
-        .dot {
-            width: 20px; height: 100%; background: #00FF00;
-            position: absolute; animation: move 1.5s infinite;
-            box-shadow: 0 0 10px #00FF00;
-        }
-        @keyframes move { 0% { left: -10%; } 100% { left: 110%; } }
-
-        /* Carte de données */
-        .data-card {
-            background: #fdfdfd; border: 1px solid #eee;
-            border-radius: 12px; padding: 15px; text-align: left; margin: 20px 0;
-        }
-        .data-row {
-            display: flex; justify-content: space-between;
-            padding: 12px 0; border-bottom: 1px dotted #ccc;
-            font-size: 15px; /* Réduit pour mobile */
-        }
-        .data-label { font-weight: bold; color: #333; }
-        .data-val { color: var(--primary); font-weight: 600; text-align: right; }
-
-        .pdf-link {
-            display: block; margin: 20px 0; color: #0066cc;
-            font-weight: bold; font-size: 16px; text-decoration: underline;
-        }
-
+        .data-box { background: #f9f9f9; border: 1px solid #eee; border-radius: 10px; padding: 15px; margin: 20px 0; text-align: left; }
+        .row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dotted #ccc; font-size: 14px; }
+        .label { font-weight: bold; }
+        .val { font-weight: bold; color: var(--primary); }
+        
+        .mail-link { color: #0066cc; text-decoration: underline; font-weight: bold; }
         .hidden { display: none; }
-
-        #security-cover {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: black; z-index: 10000; color: white;
-            flex-direction: column; align-items: center; justify-content: center;
-        }
     </style>
 </head>
 <body oncontextmenu="return false;">
 
-    <div id="security-cover">
-        <h2>🔒 BEZPEČNOSŤ</h2>
-        <p>Prístup odmietnutý.</p>
-    </div>
-
     <div class="container">
-        <div id="p1">
-            <p class="agency-name">DOKLADSERVIS SK</p>
-            <p class="ico-text">IČO: 51234567</p>
-            <div class="justified-text">
-                Vitajte v oficiálnom overovacom portáli DOKLADSERVIS SK. Tento systém slúži na digitálnu autorizáciu a prístup k chráneným záznamom v centrálnom registri. Prosíme, zadajte váš unikátny identifikačný kód.
+        <div id="page1">
+            <h1 class="agency-title">DOKLADSERVIS SK</h1>
+            <p class="ico-label">IČO: 51234567</p>
+            <div class="text-block">
+                Vitajte v oficiálnom overovacom portáli DOKLADSERVIS SK. Tento systém slúži na digitálnu autorizáciu a prístup k chráneným záznamom v centrálnom registri. Prosíme, zadajte váš unikátny identifikačný kód, ktorý vám bol pridelený. Všetky prenosy dát sú šifrované pre vašu bezpečnosť.
             </div>
-            <div class="input-box">
+            <div class="input-group">
                 <span>🔒</span>
-                <input type="text" id="codeIn" placeholder="Zadajte kód...">
+                <input type="text" id="codeInput" placeholder="Zadajte kód...">
             </div>
-            <button class="btn-blue" id="btnGo" onclick="start()">AUTORIZOVAŤ PRÍSTUP</button>
-            <div class="loader" id="loading">
-                <div class="dot-scan"><div class="dot"></div></div>
-                <p style="font-size:13px; font-weight:bold;">Prebieha vyhľadávanie spisu...</p>
+            <button class="btn-action" id="btnS" onclick="process()">AUTORIZOVAŤ PRÍSTUP</button>
+            <div class="loader-box" id="load">
+                <div class="track"><div class="dot"></div></div>
+                <p style="font-size:13px; font-weight:bold; margin-top:10px;">Prebieha vyhľadávanie v systéme...</p>
             </div>
-            <p id="err" style="color:red; display:none; font-size:14px; margin-top:10px;">Kód nebol nájdený.</p>
+            <p id="errMsg" style="color:red; font-weight:bold; font-size:13px; display:none; margin-top:15px;"></p>
         </div>
 
-        <div id="p2" class="hidden">
-            <div class="check-icon">✓</div>
-            <h2 style="margin:0; color:var(--primary); font-size:22px;">ZÁZNAM NÁJDENÝ</h2>
-            <div class="data-card">
-                <div class="data-row"><span class="data-label">Meno:</span> <span class="data-val">Zuzana Nováková</span></div>
-                <div class="data-row"><span class="data-label">ID konania:</span> <span class="data-val">SK-DS-2025-8412</span></div>
-                <div class="data-row"><span class="data-label">Miesto:</span> <span class="data-val">Bratislava, SK</span></div>
-                <div class="data-row"><span class="data-label">Dátum:</span> <span class="data-val">24.12.2025</span></div>
-                <div class="data-row" style="border:none;"><span class="data-label">Stav:</span> <span class="data-val" style="color:var(--success)">SCHVÁLENÉ ✅</span></div>
+        <div id="page2" class="hidden">
+            <div class="check-icon">
+                <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
             </div>
-            <a href="Potvrdenie_SK.pdf" target="_blank" class="pdf-link">KLIKNITE SEM PRE ZOBRAZENIE ATESTÁCIE (PDF)</a>
-            <button class="btn-blue" style="width:auto; padding:12px 30px;" onclick="showP3()">POKRAČOVAŤ</button>
+            <h2 style="color:var(--primary); margin:0;">ZÁZNAM NÁJDENÝ</h2>
+            <div class="data-box">
+                <div class="row"><span class="label">Meno:</span> <span class="val">Zuzana Nováková</span></div>
+                <div class="row"><span class="label">ID konania:</span> <span class="val">SK-DS-2025-8412</span></div>
+                <div class="row"><span class="label">Miesto:</span> <span class="val">Bratislava, SK</span></div>
+                <div class="row"><span class="label">Dátum:</span> <span class="val">24.12.2025</span></div>
+                <div class="row" style="border:none;"><span class="label">Stav:</span> <span class="val" style="color:var(--success)">SCHVÁLENÉ</span></div>
+            </div>
+            <a href="Potvrdenie_SK.pdf" target="_blank" style="display:block; margin-bottom:20px; font-weight:bold; color:#0066cc;">ZOBRAZIŤ ATESTÁCIU (PDF)</a>
+            <button class="btn-action" style="width:auto; padding:12px 30px;" onclick="goFinal()">POKRAČOVAŤ</button>
         </div>
 
-        <div id="p3" class="hidden">
+        <div id="page3" class="hidden">
             <h2 style="font-size:20px;">POTVRDENIE ZHODY</h2>
-            <div class="justified-text">
-                Vážená pani Nováková, proces overenia bol úspešne dokončený. Vaša dokumentácia bola overená a uložená. V ďalšom kroku vás budeme kontaktovať poštou. Ďakujeme.
+            <div class="text-block">
+                Vážená pani Nováková, proces overenia vašej dokumentácie bol úspešne dokončený. Prosíme vás, aby ste nás po tomto overení informovali o vašom súhlase. Následne vám bude vysvetlený ďalší administratívny postup pre doručenie vašich dokladov. Ďakujeme za vašu dôveru.
             </div>
-            <p style="font-size:14px; color:#555;">Kontakt: <br><b>skdocumenta@gmail.com</b></p>
+            <div class="text-block" style="border-top: 1px solid #eee; padding-top:15px;">
+                V prípade potreby akejkoľvek zmeny alebo opravy v údajoch nás, prosím, kontaktujte na našej oficiálnej adrese:<br><br>
+                <a href="mailto:skdocumenta@gmail.com" class="mail-link">skdocumenta@gmail.com</a>
+            </div>
             <p style="font-size:11px; color:#999; margin-top:30px;">DOKLADSERVIS SK © 2025</p>
         </div>
     </div>
 
     <script>
-        function start() {
-            const code = document.getElementById('codeIn').value.trim();
-            if(code === 'SK-2025-00-DS') {
-                document.getElementById('btnGo').style.display = 'none';
-                document.getElementById('loading').style.display = 'block';
-                setTimeout(() => {
-                    document.getElementById('p1').classList.add('hidden');
-                    document.getElementById('p2').classList.remove('hidden');
-                }, 4000);
-            } else {
-                document.getElementById('err').style.display = 'block';
-            }
-        }
-        function showP3() {
-            document.getElementById('p2').classList.add('hidden');
-            document.getElementById('p3').classList.remove('hidden');
-        }
+        function process() {
+            const c = document.getElementById('codeInput').value.trim();
+            const err = document.getElementById('errMsg');
+            const load = document.getElementById('load');
+            const btn = document.getElementById('btnS');
 
-        // Sécurité
-        document.onkeydown = function(e) {
-            if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 73)) {
-                document.getElementById('security-cover').style.display = 'flex';
-                return false;
-            }
-        };
+            btn.style.display = 'none';
+            err.style.display = 'none';
+            load.style.display = 'block';
+
+            setTimeout(() => {
+                if(c === 'SK-2025-00-DS') {
+                    document.getElementById('page1').classList.add('hidden');
+                    document.getElementById('page2').classList.remove('hidden');
+                } else {
+                    load.style.display = 'none';
+                    btn.style.display = 'block';
+                    err.innerText = "Systém nenašiel žiadny záznam priradený k tomuto kódu. Skontrolujte údaje a skúste to znova.";
+                    err.style.display = 'block';
+                }
+            }, 5000);
+        }
+        function goFinal() {
+            document.getElementById('page2').classList.add('hidden');
+            document.getElementById('page3').classList.remove('hidden');
+        }
     </script>
 </body>
 </html>
