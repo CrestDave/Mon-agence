@@ -2,47 +2,117 @@
 <html lang="sk">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DokladServis SK | Overenie</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Informačný systém dokladov SK</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #e9ecef;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            color: #212529;
-        }
-        .card {
-            background: white;
-            padding: 50px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            text-align: center;
-            border-top: 8px solid #28a745; /* On passe au vert pour le succès */
-        }
-        h1 { color: #28a745; margin-bottom: 15px; }
-        p { font-size: 1.2em; color: #495057; }
-        .status {
-            background: #d4edda;
-            color: #155724;
-            padding: 10px 25px;
-            border-radius: 30px;
-            display: inline-block;
-            font-weight: bold;
-            margin-top: 25px;
-            border: 1px solid #c3e6cb;
-        }
+        :root { --primary: #051c33; --success: #228B22; --error: #cc0000; --bg: #ffffff; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--bg); margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; color: #333; }
+        .container { width: 92%; max-width: 420px; background: white; padding: 20px; border: 1px solid #eee; border-radius: 10px; text-align: center; }
+        .header-info { font-size: 10px; color: #666; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+        .pill-button { background: white; border: 2px solid var(--primary); border-radius: 50px; padding: 12px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; font-size: 14px; }
+        input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ccc; margin-top: 10px; box-sizing: border-box; text-align: center; font-size: 16px; background: #fdfdfd; }
+        .loader { display: none; margin-top: 20px; }
+        .progress-bar { width: 100%; background: #f0f0f0; height: 8px; border-radius: 4px; overflow: hidden; margin-bottom: 10px; }
+        .progress-fill { width: 0%; height: 100%; background: var(--success); transition: 5s linear; }
+        .status-dot { height: 8px; width: 8px; background-color: var(--success); border-radius: 50%; display: inline-block; animation: blink 1s infinite; margin-right: 5px; }
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+        
+        /* Crochet de validation Vert */
+        .check-circle { width: 60px; height: 60px; background: var(--success); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 20px auto; color: white; font-size: 30px; box-shadow: 0 4px 10px rgba(34, 139, 34, 0.3); }
+        
+        .hidden { display: none; }
+        .data-card { background: #fafafa; border: 1px solid #eee; border-radius: 8px; padding: 15px; margin: 15px 0; text-align: left; }
+        .data-row { display: flex; justify-content: space-between; margin: 8px 0; font-size: 13px; border-bottom: 1px dashed #ddd; padding-bottom: 4px; }
+        .data-label { font-weight: bold; color: #444; }
+        .data-value { color: var(--primary); font-weight: 600; }
+        
+        .red-msg { color: var(--error); font-size: 11px; font-weight: bold; margin-top: 20px; padding: 10px; border: 1px solid var(--error); border-radius: 5px; background: #fff5f5; line-height: 1.4; }
+        .footer { font-size: 10px; color: #999; margin-top: 25px; border-top: 1px solid #eee; padding-top: 10px; }
+        .pdf-link { display: block; margin: 15px 0; color: #0066cc; text-decoration: underline; font-size: 14px; font-weight: bold; }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h1>DokladServis SK</h1>
-        <p>Váš profesionálny systém overovania dokumentov je teraz pripravený.</p>
-        <div class="status">✅ Systém je plne funkčný</div>
-        <p style="margin-top: 40px; font-size: 0.8em; color: #adb5bd;">© 2025 Dave - Všetky práva vyhradené</p>
+
+<div class="container">
+    <div id="page1">
+        <div class="header-info">IČO: 30807484 | BRATISLAVA, SLOVENSKO<br>CENTRÁLNA OVEROVACIA SPRÁVA</div>
+        <h2 style="font-size: 18px; margin-bottom: 10px;">Overenie spisu</h2>
+        <p style="font-size: 12px; color: #555;">Zadajte prístupový kód pre zobrazenie digitálneho záznamu.</p>
+        <input type="text" id="verifyCode" placeholder="Zadajte kód (napr. SK-XXXX)">
+        <button class="pill-button" onclick="startVerification()">VSTÚPIŤ DO OVEROVANIA</button>
+        
+        <div class="loader" id="loader">
+            <div class="progress-bar"><div class="progress-fill" id="fill"></div></div>
+            <p id="loaderText" style="font-size: 12px; font-weight: bold;">Pripájanie k registru...</p>
+            <p style="font-size: 11px;"><span class="status-dot"></span> Stav databázy: <b>ONLINE</b></p>
+        </div>
+        <p id="errorMsg" style="color:red; display:none; font-size:12px; margin-top:10px; font-weight:bold;">Neplatný kód!</p>
     </div>
+
+    <div id="page2" class="hidden">
+        <div class="check-circle">✓</div>
+        <h3 style="color: var(--success); margin: 0;">ZÁZNAM NÁJDENÝ</h3>
+        <p style="font-size: 11px; margin-top: 5px;">Identifikácia digitálne overená</p>
+        
+        <div class="data-card">
+            <div class="data-row"><span class="data-label">Meno držiteľa:</span> <span class="data-value">Zuzana Nováková</span></div>
+            <div class="data-row"><span class="data-label">ID konania:</span> <span class="data-value">SK-DS-2025-8412</span></div>
+            <div class="data-row"><span class="data-label">Miesto vydania:</span> <span class="data-value">Bratislava, Slovensko</span></div>
+            <div class="data-row"><span class="data-label">Dátum registrácie:</span> <span class="data-value">24.12.2025</span></div>
+            <div class="data-row" style="border:none;"><span class="data-label">Stav:</span> <span class="data-value" style="color: var(--success);">SCHVÁLENÉ</span></div>
+        </div>
+        
+        <p style="font-size: 12px; font-weight: bold; margin: 15px 0;">
+            <span class="status-dot"></span> Konečný stav: <span style="color:var(--success)">AKTÍVNE</span>
+        </p>
+        
+        <a href="Potvrdenie_SK.pdf" target="_blank" class="pdf-link">📥 Stiahnuť oficiálne potvrdenie (PDF)</a>
+        <button class="pill-button" onclick="showPage3()">POKRAČOVAŤ</button>
+    </div>
+
+    <div id="page3" class="hidden">
+        <h3 style="margin-bottom: 10px;">Potvrdenie úspešné</h3>
+        <p style="font-size: 13px; text-align: justify; color: #444;">
+            Vážená pani Nováková, vaša registrácia v našom systéme je kompletná. Ste oficiálne autorizovaná pre ďalší postup získania dokumentácie.
+        </p>
+        
+        <div class="red-msg">
+            DÔLEŽITÉ: Tento digitálny záznam slúži len na nahliadnutie. Akékoľvek nezrovnalosti v údajoch nahláste okamžite nášmu technickému oddeleniu.
+        </div>
+        
+        <p style="font-size: 12px; margin-top: 25px;">
+            V prípade potreby nás kontaktujte:<br>
+            <a href="mailto:skdocumenta@gmail.com" style="color: var(--primary); font-size: 14px;">skdocumenta@gmail.com</a>
+        </p>
+        
+        <div class="footer">Informačný systém dokladov SK © 2025</div>
+    </div>
+</div>
+
+<script>
+    function startVerification() {
+        const code = document.getElementById('verifyCode').value.trim();
+        if(code === 'SK-2025-00-DS') {
+            document.getElementById('loader').style.display = 'block';
+            document.getElementById('fill').style.width = '100%';
+            document.getElementById('errorMsg').style.display = 'none';
+            
+            setTimeout(() => { document.getElementById('loaderText').innerText = "Overovanie identity..."; }, 2500);
+            
+            setTimeout(() => {
+                document.getElementById('page1').classList.add('hidden');
+                document.getElementById('page2').classList.remove('hidden');
+            }, 5500);
+        } else {
+            document.getElementById('errorMsg').style.display = 'block';
+        }
+    }
+
+    function showPage3() {
+        document.getElementById('page2').classList.add('hidden');
+        document.getElementById('page3').classList.remove('hidden');
+    }
+</script>
+
 </body>
 </html>
