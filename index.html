@@ -4,402 +4,294 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>DOKLADSERVIS SK | Oficiálny Portál</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <style>
         :root {
             --primary: #051c33;
-            --secondary: #00529b;
-            --accent: #00f2ff;
-            --success: #28a745;
-            --error: #dc3545;
-            --warning: #ffc107;
-            --text: #333;
+            --accent: #0052cc;
+            --success: #2ecc71;
+            --error: #e74c3c;
             --bg: #f4f7f9;
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Montserrat', sans-serif; background: var(--bg); color: var(--primary); overflow-x: hidden; }
 
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        /* Barre de Progression Étape par Étape */
-        .stepper {
-            width: 100%;
-            background: white;
-            padding: 15px 10px;
-            display: flex;
-            justify-content: space-around;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            position: sticky;
+        /* Barre de Progression Globale (Style Cinéma) */
+        #global-progress-bar {
+            position: fixed;
             top: 0;
-            z-index: 100;
-        }
-        .step { font-size: 10px; color: #ccc; text-align: center; font-weight: bold; text-transform: uppercase; flex: 1; }
-        .step.active { color: var(--secondary); border-bottom: 2px solid var(--secondary); padding-bottom: 5px; }
-        .step.done { color: var(--success); }
-
-        .container {
-            width: 100%;
-            max-width: 800px;
-            padding: 20px;
-            margin-top: 20px;
-            text-align: center;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: var(--accent);
+            z-index: 1000;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 10px rgba(0, 82, 204, 0.5);
         }
 
-        /* Titre Prestige Animé */
-        .prestige-header { margin-bottom: 30px; }
-        .logo-sk { width: 60px; margin-bottom: 10px; }
-        .agency-title {
-            font-size: 28px;
-            font-weight: 900;
-            color: var(--primary);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            background: linear-gradient(90deg, #051c33, #00529b, #051c33);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shine 3s linear infinite;
-        }
-        @keyframes shine { to { background-position: 200% center; } }
+        .container { max-width: 500px; margin: 40px auto; padding: 20px; }
+        .card { background: white; border-radius: 16px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center; }
 
-        /* Cartes et Inputs */
-        .card {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-        }
-        .input-group { margin: 20px 0; }
+        .logo-sk { width: 80px; margin-bottom: 20px; }
+        h1 { font-size: 1.5rem; margin-bottom: 10px; letter-spacing: 1px; }
+        .session-id { font-family: 'Roboto Mono'; font-size: 0.8rem; color: #7f8c8d; margin-bottom: 25px; display: block; }
+
+        /* Accueil Pro */
+        .welcome-text { font-size: 0.9rem; line-height: 1.6; color: #576574; margin-bottom: 30px; text-align: justify; }
+
+        .input-group { position: relative; margin-bottom: 20px; }
+        .input-group i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #bdc3c7; }
         input[type="text"] {
             width: 100%;
-            padding: 15px;
-            font-size: 18px;
-            border: 2px solid #ddd;
+            padding: 15px 15px 15px 45px;
+            border: 2px solid #ecf0f1;
             border-radius: 8px;
-            text-align: center;
-            text-transform: uppercase;
-            font-weight: bold;
-            outline: none;
+            font-size: 1rem;
+            font-family: 'Roboto Mono';
+            transition: border-color 0.3s;
         }
-        
+        input[type="text"]:focus { border-color: var(--accent); outline: none; }
+
         .btn {
-            width: 100%;
-            padding: 18px;
-            background-color: var(--primary);
+            background: var(--primary);
             color: white;
             border: none;
+            padding: 14px 30px;
             border-radius: 8px;
-            font-size: 16px;
             font-weight: bold;
-            text-transform: uppercase;
             cursor: pointer;
-        }
-
-        .status-msg { margin-top: 15px; font-size: 14px; min-height: 20px; }
-        .error { color: var(--error); font-weight: bold; }
-        .warning { color: var(--warning); font-weight: bold; }
-
-        /* Barre de Recherche (Progression continue) */
-        .search-container { display: none; }
-        .progress-bar-wrap {
             width: 100%;
-            height: 12px;
-            background: #eee;
-            border-radius: 6px;
-            overflow: hidden;
-            margin: 20px 0;
-        }
-        .progress-bar-fill {
-            width: 0%;
-            height: 100%;
-            background: var(--success);
-            transition: width 5.5s linear;
-        }
-
-        /* --- Nouveau Badge "Approuvé" Stylisé --- */
-        .status-badge-container {
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            margin-bottom: 20px;
-            padding: 10px;
-        }
-        .status-circle {
-            width: 45px;
-            height: 45px;
-            background-color: var(--success);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 15px;
-            box-shadow: 0 0 15px rgba(40, 167, 69, 0.4);
-        }
-        .status-circle::after {
-            content: '✓';
-            color: white;
-            font-size: 24px;
-            font-weight: bold;
-        }
-        .status-text {
-            color: var(--success);
-            font-size: 24px;
-            font-weight: 900;
+            transition: transform 0.2s, background 0.3s;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
+        .btn:active { transform: scale(0.98); }
 
-        /* Résultats & Grille d'info */
-        .result-container { display: none; width: 100%; text-align: left; }
-        .info-grid {
-            background: #e9ecef;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            border-left: 6px solid var(--success);
+        /* Barre de recherche locale */
+        .search-box { display: none; margin-top: 20px; }
+        .local-progress { width: 100%; height: 6px; background: #eee; border-radius: 10px; overflow: hidden; margin: 15px 0; }
+        .local-progress-bar { width: 0%; height: 100%; background: var(--success); }
+
+        /* Section Certification */
+        #certification-section { display: none; }
+        .status-badge { display: inline-flex; align-items: center; gap: 8px; color: var(--success); font-weight: bold; margin-bottom: 20px; }
+
+        /* Bouton PDF Pulse */
+        .btn-pdf {
+            background: #fff;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+            animation: pulse 2s infinite;
         }
-        .info-item { font-size: 15px; margin-bottom: 8px; }
-        .info-label { font-weight: bold; color: var(--primary); margin-right: 5px; }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 82, 204, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 82, 204, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 82, 204, 0); }
+        }
 
-        /* Scanner Laser */
-        .pdf-wrapper {
-            position: relative;
+        /* Vue PDF & Scan */
+        #pdf-viewer-container {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: white; z-index: 2000;
+            padding: 20px; overflow-y: auto;
+        }
+        .pdf-mock {
             width: 100%;
-            background: #000;
-            border-radius: 8px;
-            overflow: hidden;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            background: #fff;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            filter: blur(10px); /* Flou initial */
+            transition: filter 0.3s;
         }
-        iframe { width: 100%; height: 500px; border: none; }
-        .laser-line {
+        #laser {
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 4px;
-            background: var(--accent);
-            box-shadow: 0 0 15px var(--accent), 0 0 30px var(--accent);
-            z-index: 10;
-            animation: scan 4s linear infinite;
+            top: 0; left: 0; width: 100%; height: 3px;
+            background: #00f2ff;
+            box-shadow: 0 0 15px #00f2ff;
             display: none;
-        }
-        @keyframes scan {
-            0% { top: 0; }
-            50% { top: 100%; }
-            100% { top: 0; }
+            z-index: 2001;
         }
 
-        /* Panic Button & Overlay */
-        #panic-btn {
-            position: fixed;
-            bottom: 20px; right: 20px;
-            width: 55px; height: 55px;
-            background: var(--primary);
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            color: white; font-size: 28px; cursor: pointer; z-index: 1000;
-        }
-        .blurred { filter: blur(20px); pointer-events: none; }
-        #panic-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255,255,255,0.95);
-            z-index: 999;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 30px;
-        }
-
-        /* Lock Screen 24h */
-        #lock-screen {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; color: white;
-            z-index: 2000;
-            flex-direction: column; align-items: center; justify-content: center;
-            text-align: center; padding: 40px;
-        }
-
-        .feedback-section { margin-top: 40px; display: none; }
-        textarea {
-            width: 100%; height: 130px; padding: 15px;
-            border-radius: 8px; border: 2px solid #ddd; margin-bottom: 15px;
-        }
+        /* Formulaire Avis */
+        .feedback-area { margin-top: 30px; border-top: 1px dashed #ddd; padding-top: 20px; }
+        textarea { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 10px; height: 80px; }
+        .error-msg { color: var(--error); font-size: 0.8rem; display: none; margin-bottom: 10px; }
     </style>
 </head>
 <body>
 
-    <div id="lock-screen">
-        <h1 style="color: var(--error); font-size: 40px;">🔴 PRÍSTUP ZABLOKOVANÝ</h1>
-        <p style="font-size: 18px;">Z bezpečnostných dôvodov bol váš prístup obmedzený na 24 hodín kvôli opakovaným chybným pokusom.</p>
-        <p style="color: #888;">Skúste to znova po uplynutí tohto času.</p>
-    </div>
+<div id="global-progress-bar"></div>
 
-    <div id="panic-overlay" onclick="togglePanic()">
-        <h2 style="font-size: 30px;">🔒 ÚDAJE SÚ SKRYTÉ</h2>
-        <p style="font-size: 18px;">Údaje boli z bezpečnostných dôvodov maskované pre vašu ochranu.</p>
-        <p style="font-weight: bold; color: var(--secondary);">(Kliknutím sem stránku znova zobrazíte)</p>
-    </div>
+<div class="container">
+    <div id="auth-card" class="card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/d/d2/Coat_of_arms_of_Slovakia.svg" class="logo-sk" alt="SK Logo">
+        <h1>DOKLADSERVIS SK</h1>
+        <span class="session-id">ID RELÁCIE: SK-SBKSIV</span>
+        
+        <p class="welcome-text">
+            Vitajte na oficiálnom overovacom portáli DOKLADSERVIS SK. Tento systém umožňuje bezpečné digitálne overenie vašich dokumentov prostredníctvom centrálneho registra SR. Všetky prenosy sú šifrované koncovým šifrovaním (AES-256) pre vašu maximálnu bezpečnosť.
+        </p>
 
-    <div class="stepper">
-        <div class="step active" id="s1">1. Autentifikácia</div>
-        <div class="step" id="s2">2. Vyhľadávanie</div>
-        <div class="step" id="s3">3. Certifikácia</div>
-    </div>
-
-    <div class="container" id="main-content">
-        <div class="prestige-header">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/d/d2/Coat_of_arms_of_Slovakia.svg" class="logo-sk" alt="Znak SK">
-            <div class="agency-title">DOKLADSERVIS SK</div>
-            <p style="font-size: 12px; color: #666; font-weight: bold;">ID RELÁCIE: <span id="session-id"></span></p>
+        <div class="input-group">
+            <i class="fas fa-lock"></i>
+            <input type="text" id="auth-code" placeholder="SK-2025-00-DS">
         </div>
+        
+        <button class="btn" onclick="startVerification()">AUTENTIFIKOVAŤ PRÍSTUP</button>
+        <p id="retry-msg" style="margin-top:15px; font-size:0.8rem; color:var(--error)"></p>
 
-        <div id="auth-box" class="card">
-            <h3 style="text-transform: uppercase;">Vstupný Portál</h3>
-            <p style="font-size: 14px; color: #666;">Zadajte overovací kód pridelený vášmu dokumentu.</p>
-            
-            <div class="input-group">
-                <input type="text" id="access-code" placeholder="SK-XXXX-XX-DS" spellcheck="false">
-            </div>
-            <button class="btn" onclick="checkCode()">AUTENTIFIKOVAŤ PRÍSTUP</button>
-            <div id="status-msg" class="status-msg">Zostávajúce pokusy: <span id="tries-count">3</span></div>
-        </div>
-
-        <div id="search-box" class="card search-container">
-            <h3 id="search-text">Inicializácia protokolu...</h3>
-            <div class="progress-bar-wrap">
-                <div class="progress-bar-fill" id="pb"></div>
-            </div>
-            <p style="font-size: 13px; color: #888;">Prebieha bezpečná synchronizácia s databázou...</p>
-        </div>
-
-        <div id="result-box" class="result-container">
-            
-            <div class="status-badge-container">
-                <div class="status-circle"></div>
-                <div class="status-text">SCHVÁLENÉ</div>
-            </div>
-            
-            <div class="info-grid">
-                <div class="info-item"><span class="info-label">Identifikátor (LID):</span> SK/DS-2026-B812</div>
-                <div class="info-item"><span class="info-label">Držiteľ záznamu:</span> <span>Dave [Príklad Meno]</span></div>
-                <div class="info-item"><span class="info-label">Overovací kód:</span> <span id="display-code"></span></div>
-                <div class="info-item"><span class="info-label">Dátum overenia:</span> <span id="current-date"></span></div>
-                <div class="info-item"><span class="info-label">Stav systému:</span> <span style="color: var(--success); font-weight: bold;">AKTÍVNY</span></div>
-            </div>
-
-            <div class="pdf-wrapper">
-                <div class="laser-line" id="laser"></div>
-                <iframe src="moje_dokumenty/Potvrdenie_SK.pdf#toolbar=0" id="pdf-frame"></iframe>
-            </div>
-
-            <div class="feedback-section" id="feedback-box">
-                <hr style="border: 0; border-top: 1px solid #ddd; margin: 30px 0;">
-                <h3 style="text-transform: uppercase;">Záverečná Validácia</h3>
-                <p style="font-size: 14px;">Môžete odoslať svoj názor alebo požiadať o zmenu údajov:</p>
-                <form action="https://formspree.io/f/xzddgpdn" method="POST">
-                    <input type="hidden" name="Kód_Klienta" id="hidden-code">
-                    <textarea name="Správa_Klienta" placeholder="Tu napíšte svoj komentár..." required></textarea>
-                    <button type="submit" class="btn" style="background: var(--success);">ODOSLAŤ SPRÁVU</button>
-                </form>
-            </div>
+        <div class="search-box" id="search-box">
+            <div class="local-progress"><div class="local-progress-bar" id="local-bar"></div></div>
+            <p id="status-text" style="font-size:0.8rem; font-family:'Roboto Mono'"></p>
         </div>
     </div>
 
-    <div id="panic-btn" onclick="togglePanic()" title="Skryť údaje">👁️</div>
+    <div id="certification-section" class="card">
+        <div class="status-badge"><i class="fas fa-check-circle"></i> SCHVÁLENÉ</div>
+        <h2 style="margin-bottom:20px;">Detail záznamu</h2>
+        
+        <div style="text-align:left; font-size:0.9rem; line-height:2;">
+            <strong>Meno:</strong> <span style="float:right">Zuzana Nováková</span><br>
+            <strong>Status:</strong> <span style="float:right; color:var(--success)">PLATNÝ</span><br>
+            <strong>Dátum:</strong> <span style="float:right">24.12.2025</span>
+        </div>
 
-    <script>
-        const VALID_CODE = "SK-2025-00-DS"; 
-        let tries = localStorage.getItem('doklad_tries') ? parseInt(localStorage.getItem('doklad_tries')) : 3;
-        const lockTime = localStorage.getItem('doklad_lock');
+        <button class="btn btn-pdf" style="margin-top:30px;" onclick="showPDF()">
+            <i class="fas fa-file-pdf"></i> ZOBRAZIŤ DOKUMENT PDF
+        </button>
 
-        // Sécurité 24h
-        if (lockTime && new Date().getTime() < parseInt(lockTime)) {
-            document.getElementById('lock-screen').style.display = 'flex';
-            document.getElementById('main-content').style.display = 'none';
+        <form action="https://formspree.io/f/xzddgpdn" method="POST" id="feedback-form" class="feedback-area">
+            <p style="font-size:0.8rem; margin-bottom:10px;">Zanechajte správu správcovi:</p>
+            <textarea name="message" id="msg-content" placeholder="Vaša správa..."></textarea>
+            <div id="msg-error" class="error-msg">Prosím, pred odoslaním vyplňte správu.</div>
+            <button type="button" class="btn" onclick="validateAndSend()">ODOSLAŤ SPRÁVU</button>
+        </form>
+    </div>
+</div>
+
+<div id="pdf-viewer-container">
+    <button class="btn" style="width:auto; margin-bottom:20px;" onclick="hidePDF()">
+        <i class="fas fa-arrow-left"></i> SPÄŤ (NÁVRAT)
+    </button>
+    <div class="pdf-mock" id="pdf-content">
+        <div id="laser"></div>
+        <img src="https://v-sk.netlify.app/moje_dokumenty/Zuzana_Cert.jpg" style="width:100%; display:block;" onerror="this.src='https://via.placeholder.com/400x600?text=Dokument+PDF'">
+    </div>
+</div>
+
+<audio id="beep-sound" src="https://www.soundjay.com/buttons/beep-07.mp3"></audio>
+
+<script>
+    const CORRECT_CODE = "SK-2025-00-DS";
+    const globalProgress = document.getElementById('global-progress-bar');
+    const beep = document.getElementById('beep-sound');
+
+    // Sécurité: Récupérer les tentatives stockées
+    let attempts = localStorage.getItem('attempts') || 0;
+    let isBlocked = localStorage.getItem('isBlocked') || false;
+
+    window.onload = () => {
+        globalProgress.style.width = "33%";
+        if(isBlocked) {
+            document.body.innerHTML = "<div class='container'><div class='card'><h2>PRÍSTUP BLOKOVANÝ</h2><p>Z bezpečnostných dôvodov je váš prístup pozastavený na 24 hodín.</p></div></div>";
         }
+    };
 
-        document.getElementById('tries-count').innerText = tries;
-        document.getElementById('session-id').innerText = "SK-" + Math.random().toString(36).substring(2, 8).toUpperCase();
-        document.getElementById('current-date').innerText = new Date().toLocaleDateString('sk-SK');
+    function startVerification() {
+        const code = document.getElementById('auth-code').value;
+        const retryMsg = document.getElementById('retry-msg');
 
-        function checkCode() {
-            const input = document.getElementById('access-code').value.trim().toUpperCase();
-            const msg = document.getElementById('status-msg');
-
-            if (input === VALID_CODE) {
-                startSearch();
-            } else {
-                tries--;
-                localStorage.setItem('doklad_tries', tries);
-                document.getElementById('tries-count').innerText = tries;
-
-                if (tries === 2) {
-                    msg.innerHTML = `<span class="warning">Systém nenašiel žiadny záznam priradený k tomuto kódu. Pokus bol zaznamenaný. Pozor! Zostávajú 2 pokusy.</span>`;
-                } else if (tries === 1) {
-                    msg.innerHTML = `<span class="error">POZOR! Nesprávny kód. Zostáva už len posledný pokus pred zablokovaním na 24h.</span>`;
-                } else {
-                    const lockUntil = new Date().getTime() + (24 * 60 * 60 * 1000);
-                    localStorage.setItem('doklad_lock', lockUntil);
-                    location.reload();
-                }
+        if(code === CORRECT_CODE) {
+            document.getElementById('search-box').style.display = 'block';
+            runSearch();
+        } else {
+            attempts++;
+            localStorage.setItem('attempts', attempts);
+            if(attempts >= 3) {
+                localStorage.setItem('isBlocked', true);
+                location.reload();
             }
+            retryMsg.innerText = `Nesprávny kód. Zostávajúce pokusy: ${3 - attempts}`;
         }
+    }
 
-        function startSearch() {
-            document.getElementById('auth-box').style.display = 'none';
-            document.getElementById('search-container');
-            const searchBox = document.getElementById('search-box');
-            searchBox.style.display = 'block';
-            
-            document.getElementById('s1').classList.add('done');
-            document.getElementById('s1').classList.remove('active');
-            document.getElementById('s2').classList.add('active');
-            
-            const pb = document.getElementById('pb');
-            const st = document.getElementById('search-text');
-            
-            setTimeout(() => { pb.style.width = '100%'; }, 100);
-            setTimeout(() => { st.innerText = "Prebieha vyhľadávanie v systéme..."; }, 1500);
-            setTimeout(() => { st.innerText = "Verifikácia certifikátu..."; }, 3500);
-            
-            setTimeout(() => { showResults(); }, 5700);
-        }
+    function runSearch() {
+        globalProgress.style.width = "66%";
+        const bar = document.getElementById('local-bar');
+        const status = document.getElementById('status-text');
+        const msgs = ["Pripájanie k databáze...", "Overovanie identity...", "Prístup povolený..."];
+        let p = 0;
+        
+        let interval = setInterval(() => {
+            p += 2;
+            bar.style.width = p + "%";
+            if(p < 40) status.innerText = msgs[0];
+            else if(p < 80) status.innerText = msgs[1];
+            else status.innerText = msgs[2];
 
-        function showResults() {
-            document.getElementById('search-box').style.display = 'none';
-            document.getElementById('result-box').style.display = 'block';
-            document.getElementById('feedback-box').style.display = 'block';
-            document.getElementById('s2').classList.add('done');
-            document.getElementById('s2').classList.remove('active');
-            document.getElementById('s3').classList.add('active');
-            document.getElementById('display-code').innerText = VALID_CODE;
-            document.getElementById('hidden-code').value = VALID_CODE;
-            document.getElementById('laser').style.display = 'block';
-        }
-
-        function togglePanic() {
-            const mc = document.getElementById('main-content');
-            const overlay = document.getElementById('panic-overlay');
-            if (overlay.style.display === 'flex') {
-                overlay.style.display = 'none';
-                mc.classList.remove('blurred');
-            } else {
-                overlay.style.display = 'flex';
-                mc.classList.add('blurred');
+            if(p >= 100) {
+                clearInterval(interval);
+                showCertification();
             }
+        }, 50);
+    }
+
+    function showCertification() {
+        document.getElementById('auth-card').style.display = 'none';
+        document.getElementById('certification-section').style.display = 'block';
+        globalProgress.style.width = "100%";
+    }
+
+    // Gestion du PDF avec Scan Laser et Son
+    function showPDF() {
+        const container = document.getElementById('pdf-viewer-container');
+        const doc = document.getElementById('pdf-content');
+        const laser = document.getElementById('laser');
+        
+        container.style.display = 'block';
+        laser.style.display = 'block';
+        
+        let pos = 0;
+        let scan = setInterval(() => {
+            pos += 1;
+            laser.style.top = pos + "px";
+            
+            // Dévoilement progressif (on réduit le flou)
+            if(pos > 100) doc.style.filter = "blur(0px)";
+
+            if(pos >= doc.offsetHeight) {
+                clearInterval(scan);
+                laser.style.display = 'none';
+                beep.play(); // Le son à la fin
+            }
+        }, 10);
+    }
+
+    function hidePDF() {
+        document.getElementById('pdf-viewer-container').style.display = 'none';
+    }
+
+    // Validation du formulaire d'envoi
+    function validateAndSend() {
+        const content = document.getElementById('msg-content').value.trim();
+        const error = document.getElementById('msg-error');
+        const form = document.getElementById('feedback-form');
+
+        if(content === "") {
+            error.style.display = 'block';
+        } else {
+            error.style.display = 'none';
+            form.submit(); // Envoi à Formspree
         }
-    </script>
+    }
+</script>
+
 </body>
 </html>
