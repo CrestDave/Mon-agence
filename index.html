@@ -3,236 +3,192 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DOKLADSERVIS SK | Oficiálny Portál</title>
+    <title>DOKLADSERVIS SK | Portál</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto+Mono&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        :root {
-            --primary: #051c33;
-            --accent: #0052cc;
-            --success: #2ecc71;
-            --error: #e74c3c;
-            --bg: #ffffff;
-        }
-
+        :root { --primary: #051c33; --accent: #0052cc; --success: #2ecc71; --error: #e74c3c; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Montserrat', sans-serif; background: var(--bg); color: var(--primary); }
+        body { font-family: 'Montserrat', sans-serif; background: #fff; color: var(--primary); line-height: 1.6; }
 
-        /* Barre de Progression Globale (Très fine) */
-        #global-progress-bar {
-            position: fixed;
-            top: 0; left: 0; width: 33%; height: 3px;
-            background: var(--accent); z-index: 1000;
-            transition: width 0.8s ease;
+        /* Barre Cinéma */
+        #global-bar { position: fixed; top: 0; left: 0; width: 33%; height: 3px; background: var(--accent); z-index: 1000; transition: width 0.8s ease; }
+
+        .container { width: 100%; max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+        .center { text-align: center; }
+
+        /* Accueil */
+        .welcome-box { margin: 30px 0; font-size: 0.95rem; color: #555; text-align: justify; }
+        .input-box { position: relative; margin: 30px auto; max-width: 400px; border-bottom: 2px solid #eee; }
+        .input-box i { position: absolute; left: 10px; top: 15px; color: #ccc; }
+        input { width: 100%; padding: 15px 15px 15px 40px; border: none; font-family: 'Roboto Mono'; font-size: 1.1rem; outline: none; }
+
+        .btn-auth { background: var(--primary); color: white; padding: 18px; width: 100%; max-width: 400px; border: none; font-weight: bold; cursor: pointer; letter-spacing: 1px; }
+
+        /* Animation Recherche */
+        #search-step { display: none; padding: 60px 0; }
+        .loader { width: 50px; height: 50px; border: 5px solid #f3f3f3; border-top: 5px solid var(--success); border-radius: 50%; animation: spin 1s linear infinite; margin: 20px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Certification */
+        #cert-step { display: none; }
+        .check-icon { width: 70px; height: 70px; background: var(--success); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 35px; margin: 0 auto 15px; }
+        .title-success { font-size: 1.8rem; font-weight: 900; color: var(--primary); margin-bottom: 30px; }
+
+        .info-grid { border-top: 1px solid #eee; margin: 20px 0; text-align: left; }
+        .info-row { padding: 15px 0; border-bottom: 1px solid #f9f9f9; display: flex; justify-content: space-between; font-size: 1rem; }
+        .label { font-weight: bold; color: #7f8c8d; text-transform: uppercase; font-size: 0.85rem; }
+        .value { font-weight: 700; color: var(--primary); }
+
+        /* Bouton Spinner PDF */
+        .btn-spinner {
+            display: inline-block; margin: 30px 0; padding: 20px;
+            border: 2px solid var(--accent); color: var(--accent);
+            border-radius: 50px; font-weight: bold; text-decoration: none;
+            transition: 0.3s; animation: pulse 2s infinite; cursor: pointer;
         }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
 
-        /* MISE EN PAGE PLEINE LARGEUR */
-        .full-container { width: 100%; padding: 40px 20px; }
-        .header-box { text-align: center; margin-bottom: 50px; }
-        .logo-sk { width: 70px; margin-bottom: 15px; }
+        /* Viewer PDF & Scan */
+        #pdf-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 2000; overflow-y: auto; padding: 20px; }
+        .pdf-wrapper { position: relative; width: 100%; max-width: 700px; margin: 0 auto; overflow: hidden; }
+        #pdf-img { width: 100%; display: block; filter: blur(20px); transition: filter 0.1s; }
+        #scan-line { position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: #00f2ff; box-shadow: 0 0 15px #00f2ff; z-index: 2001; display: none; }
 
-        /* Accueil Professionnel */
-        .welcome-section { max-width: 900px; margin: 0 auto 40px auto; text-align: center; line-height: 1.8; color: #444; }
-
-        /* Zone de Saisie Large */
-        .auth-area { max-width: 600px; margin: 0 auto; text-align: center; }
-        .input-wrapper { 
-            position: relative; 
-            margin-bottom: 25px; 
-            display: flex; 
-            align-items: center;
-            border-bottom: 2px solid #eee;
-        }
-        .input-wrapper i { font-size: 20px; color: #ccc; margin-right: 15px; }
-        input[type="text"] {
-            width: 100%;
-            padding: 15px 0;
-            border: none;
-            font-size: 1.2rem;
-            font-family: 'Roboto Mono';
-            outline: none;
-            text-transform: uppercase;
-        }
-
-        .btn-main {
-            background: var(--primary);
-            color: white;
-            padding: 20px 40px;
-            border-radius: 4px;
-            border: none;
-            font-weight: bold;
-            letter-spacing: 2px;
-            cursor: pointer;
-            width: 100%;
-            max-width: 400px;
-        }
-
-        /* Recherche */
-        #search-screen { display: none; text-align: center; padding: 100px 20px; }
-        .loader-line { width: 200px; height: 4px; background: #eee; margin: 20px auto; overflow: hidden; }
-        .loader-fill { width: 0%; height: 100%; background: var(--success); animation: load 3s forwards; }
-        @keyframes load { to { width: 100%; } }
-
-        /* Résultat et Certification */
-        #result-screen { display: none; max-width: 1000px; margin: 0 auto; }
-        .status-header { color: var(--success); font-size: 2rem; font-weight: 900; margin-bottom: 30px; display: flex; align-items: center; gap: 15px; }
-        .circle-check { width: 40px; height: 40px; background: var(--success); border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; }
-
-        .info-list { list-style: none; border-top: 1px solid #eee; padding-top: 20px; margin-bottom: 40px; }
-        .info-list li { padding: 15px 0; border-bottom: 1px solid #f9f9f9; font-size: 1.1rem; }
-        .info-label { font-weight: bold; width: 250px; display: inline-block; color: #7f8c8d; }
-
-        /* PDF Viewer Animé */
-        #pdf-overlay { 
-            display: none; 
-            position: fixed; 
-            top: 0; left: 0; width: 100%; height: 100%; 
-            background: #fff; z-index: 3000; padding: 20px;
-            overflow-y: auto;
-        }
-        .pdf-frame { 
-            width: 100%; max-width: 800px; margin: 0 auto; 
-            position: relative; filter: blur(15px); transition: filter 0.5s; 
-        }
-        #laser-line { 
-            position: absolute; top: 0; left: 0; width: 100%; height: 4px; 
-            background: #00f2ff; box-shadow: 0 0 15px #00f2ff; z-index: 3001;
-        }
-
-        /* Formulaire */
-        .feedback-box { margin-top: 50px; background: #f8f9fa; padding: 30px; border-radius: 8px; }
-        textarea { width: 100%; height: 120px; padding: 15px; margin: 15px 0; border: 1px solid #ddd; }
-
-        @media (max-width: 600px) {
-            .info-label { width: 100%; display: block; margin-bottom: 5px; }
-        }
+        /* Feedback */
+        .feedback-card { background: #f8f9fa; padding: 25px; border-radius: 8px; margin-top: 40px; }
+        textarea { width: 100%; height: 100px; padding: 10px; margin: 15px 0; border: 1px solid #ddd; border-radius: 4px; }
     </style>
 </head>
 <body>
 
-<div id="global-progress-bar"></div>
+<div id="global-bar"></div>
 
-<div class="full-container">
-    <div id="home-step">
-        <div class="header-box">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/d/d2/Coat_of_arms_of_Slovakia.svg" class="logo-sk">
-            <h1>DOKLADSERVIS SK</h1>
-            <p style="font-family: 'Roboto Mono'; color: #999;">ID: SK-SBKSIV</p>
+<div class="container center">
+    <div id="auth-step">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/d/d2/Coat_of_arms_of_Slovakia.svg" style="width:60px;">
+        <h1 style="margin:15px 0 5px;">DOKLADSERVIS SK</h1>
+        <p style="color:#999; font-family:'Roboto Mono'; font-size:0.8rem;">ID: SK-SBKSIV</p>
+
+        <div class="welcome-box">
+            Vítame Vás na oficiálnom štátnom portáli Slovenskej republiky pre digitálnu verifikáciu dokumentov. Tento systém slúži na okamžité overenie pravosti certifikátov. Všetky prenosy sú chránené kryptografickým protokolom AES-256.
         </div>
 
-        <div class="welcome-section">
-            Vítame Vás na oficiálnom štátnom portáli pre digitálnu verifikáciu dokumentov. Tento systém slúži na overenie pravosti certifikátov a úradných dokladov v súlade s bezpečnostnými normami Slovenskej republiky. Všetky údaje sú chránené šifrovaním a prístup je monitorovaný.
+        <div class="input-box">
+            <i class="fas fa-shield-alt"></i>
+            <input type="text" id="code-in" placeholder="ZADAJTE KÓD">
         </div>
-
-        <div class="auth-area">
-            <div class="input-wrapper">
-                <i class="fas fa-shield-alt"></i>
-                <input type="text" id="code-input" placeholder="ZADAJTE OVEROVACÍ KÓD">
-            </div>
-            <button class="btn-main" onclick="verify()">AUTENTIFIKOVAŤ PRÍSTUP</button>
-            <p id="err" style="color:var(--error); margin-top:20px; font-weight:bold;"></p>
-        </div>
+        <button class="btn-auth" onclick="handleVerify()">AUTENTIFIKOVAŤ PRÍSTUP</button>
+        <p id="error-txt" style="color:var(--error); margin-top:15px; font-weight:bold;"></p>
     </div>
 
-    <div id="search-screen">
-        <h2>VYHĽADÁVANIE V REGISTRI...</h2>
-        <div class="loader-line"><div class="loader-fill"></div></div>
-        <p id="status">Pripájanie k centrálnemu serveru...</p>
+    <div id="search-step">
+        <div class="loader"></div>
+        <h2>VYHĽADÁVANIE...</h2>
+        <p id="status-msg">Pripájanie k centrálnemu registru...</p>
     </div>
 
-    <div id="result-screen">
-        <div class="status-header">
-            <div class="circle-check"><i class="fas fa-check"></i></div>
-            SCHVÁLENÉ
+    <div id="cert-step">
+        <div class="check-icon"><i class="fas fa-check"></i></div>
+        <h1 class="title-success">VÉRIFICATION RÉUSSIE</h1>
+
+        <div class="info-grid">
+            <div class="info-row"><span class="label">Identifikátor:</span><span class="value">SK-DS-2025-8412</span></div>
+            <div class="info-row"><span class="label">Držiteľ:</span><span class="value">Zuzana Nováková</span></div>
+            <div class="info-row"><span class="label">Miesto:</span><span class="value">Bratislava, SK</span></div>
+            <div class="info-row"><span class="label">Dátum:</span><span class="value">19.01.2026</span></div>
+            <div class="info-row"><span class="label">Stav:</span><span class="value" style="color:var(--success)">AKTÍVNY / PLATNÝ</span></div>
         </div>
 
-        <ul class="info-list">
-            <li><span class="info-label">IDENTIFIKÁTOR:</span> SK-DS-2025-8412</li>
-            <li><span class="info-label">DRŽITEĽ DOKLADU:</span> Zuzana Nováková</li>
-            <li><span class="info-label">MIESTO VYDANIA:</span> Bratislava, Slovenská Republika</li>
-            <li><span class="info-label">DÁTUM OVERENIA:</span> 19.01.2026</li>
-            <li><span class="info-label">STAV REGISTRÁCIE:</span> <span style="color:var(--success)">AKTÍVNY / PLATNÝ</span></li>
-        </ul>
+        <div class="btn-spinner" onclick="startScan()">
+            <i class="fas fa-sync-alt fa-spin"></i> &nbsp; ZOBRAZIŤ CERTIFIKÁT (PDF)
+        </div>
 
-        <button class="btn-main" style="background:var(--accent); width:100%; max-width:none;" onclick="openPDF()">
-            <i class="fas fa-file-pdf"></i> ZOBRAZIŤ CERTIFIKÁT (PDF)
-        </button>
-
-        <div class="feedback-box">
-            <h3>ZÁVEREČNÁ VALIDÁCIA</h3>
-            <p>Ak máte pripomienky k zobrazeným údajom, pošlite nám správu:</p>
-            <form action="https://formspree.io/f/xzddgpdn" method="POST" id="f-form">
-                <textarea name="message" id="msg" placeholder="Vaša správa pre úrad..."></textarea>
-                <p id="msg-err" style="color:var(--error); display:none;">Pole správy nesmie byť prázdne.</p>
-                <button type="button" class="btn-main" onclick="sendMsg()">ODOSLAŤ VALIDÁCIU</button>
+        <div class="feedback-card">
+            <h3>VALIDÁCIA FINÁLE</h3>
+            <p style="font-size:0.85rem; color:#666;">Potvrďte správnosť údajov alebo nám pošlite váš názor:</p>
+            <form action="https://formspree.io/f/xzddgpdn" method="POST" id="msg-form">
+                <textarea name="message" id="msg-val" placeholder="Vaša správa..."></textarea>
+                <p id="err-msg" style="color:var(--error); display:none; font-size:0.8rem;">Prosím, napíšte správu.</p>
+                <button type="button" class="btn-auth" onclick="sendFeedback()">ODOSLAŤ VALIDÁCIU</button>
             </form>
         </div>
     </div>
 </div>
 
 <div id="pdf-overlay">
-    <button class="btn-main" style="width:auto; margin-bottom:30px; background:#444;" onclick="closePDF()">
-        <i class="fas fa-arrow-left"></i> SPÄŤ NA DETAIL
-    </button>
-    <div class="pdf-frame" id="pdf-container">
-        <div id="laser-line"></div>
-        <img src="moje_dokumenty/Zuzana_Cert.jpg" style="width:100%;" onerror="this.src='https://via.placeholder.com/800x1100?text=NAČÍTAVANIE+DOKUMENTU...'">
+    <div class="pdf-wrapper" id="pdf-cont">
+        <div id="scan-line"></div>
+        <img src="moje_dokumenty/Potvrdenie_SK.pdf" id="pdf-img" onerror="this.src='https://via.placeholder.com/800x1100?text=NAČÍTAVANIE+DOKUMENTU...'">
+    </div>
+    <div class="center">
+        <button class="btn-auth" style="background:var(--accent); margin-top:20px;" onclick="closeViewer()">SPÄŤ NA DETAIL</button>
     </div>
 </div>
 
 <audio id="beep" src="https://www.soundjay.com/buttons/beep-07.mp3"></audio>
 
 <script>
-    const VALID = "SK-2025-00-DS";
-    let tries = localStorage.getItem('tries') || 0;
+    const KEY = "SK-2025-00-DS";
+    let attempts = localStorage.getItem('tries_count') || 0;
 
-    function verify() {
-        const inp = document.getElementById('code-input').value.toUpperCase();
-        if(inp === VALID) {
-            document.getElementById('home-step').style.display = 'none';
-            document.getElementById('search-screen').style.display = 'block';
-            document.getElementById('global-progress-bar').style.width = '66%';
+    function handleVerify() {
+        const val = document.getElementById('code-in').value.toUpperCase();
+        if(val === KEY) {
+            document.getElementById('auth-step').style.display = 'none';
+            document.getElementById('search-step').style.display = 'block';
+            document.getElementById('global-bar').style.width = '66%';
             
-            setTimeout(() => { document.getElementById('status').innerText = "Overovanie digitálneho podpisu..."; }, 1500);
+            setTimeout(() => { document.getElementById('status-msg').innerText = "Overovanie digitálneho certifikátu..."; }, 1500);
             setTimeout(() => {
-                document.getElementById('search-screen').style.display = 'none';
-                document.getElementById('result-screen').style.display = 'block';
-                document.getElementById('global-progress-bar').style.width = '100%';
+                document.getElementById('search-step').style.display = 'none';
+                document.getElementById('cert-step').style.display = 'block';
+                document.getElementById('global-bar').style.width = '100%';
             }, 3500);
         } else {
-            tries++;
-            localStorage.setItem('tries', tries);
-            document.getElementById('err').innerText = "NESPRÁVNY KÓD. ZOSTÁVAJÚCE POKUSY: " + (3 - tries);
-            if(tries >= 3) location.reload();
+            attempts++;
+            localStorage.setItem('tries_count', attempts);
+            document.getElementById('error-txt').innerText = "NESPRÁVNY KÓD. POKUSY: " + (3 - attempts);
+            if(attempts >= 3) location.reload();
         }
     }
 
-    function openPDF() {
+    function startScan() {
         const overlay = document.getElementById('pdf-overlay');
-        const laser = document.getElementById('laser-line');
-        const doc = document.getElementById('pdf-container');
-        overlay.style.display = 'block';
+        const laser = document.getElementById('scan-line');
+        const img = document.getElementById('pdf-img');
         
-        let p = 0;
-        let int = setInterval(() => {
-            p += 2;
-            laser.style.top = p + "px";
-            if(p > 150) doc.style.filter = "blur(0px)";
-            if(p >= doc.offsetHeight) {
-                clearInterval(int);
+        overlay.style.display = 'block';
+        laser.style.display = 'block';
+        
+        let pos = 0;
+        let speed = 8;
+        let height = document.getElementById('pdf-cont').offsetHeight;
+
+        let interval = setInterval(() => {
+            pos += speed;
+            laser.style.top = pos + "px";
+            
+            // Dévoilement (on réduit le flou là où le laser passe)
+            if(pos > height * 0.2) img.style.filter = "blur(10px)";
+            if(pos > height * 0.5) img.style.filter = "blur(5px)";
+            if(pos > height * 0.8) img.style.filter = "blur(0px)";
+
+            if(pos >= height) {
+                clearInterval(interval);
                 laser.style.display = 'none';
                 document.getElementById('beep').play();
             }
-        }, 10);
+        }, 30);
     }
 
-    function closePDF() { document.getElementById('pdf-overlay').style.display = 'none'; }
+    function closeViewer() { document.getElementById('pdf-overlay').style.display = 'none'; }
 
-    function sendMsg() {
-        const m = document.getElementById('msg').value.trim();
-        if(!m) { document.getElementById('msg-err').style.display = 'block'; }
-        else { document.getElementById('f-form').submit(); }
+    function sendFeedback() {
+        const text = document.getElementById('msg-val').value.trim();
+        if(!text) { document.getElementById('err-msg').style.display = 'block'; }
+        else { document.getElementById('msg-form').submit(); }
     }
 </script>
 </body>
