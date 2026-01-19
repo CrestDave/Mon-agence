@@ -3,130 +3,402 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DOKLADSERVIS SK</title>
+    <title>DOKLADSERVIS SK | Oficiálny Portál</title>
     <style>
         :root {
             --primary: #051c33;
+            --secondary: #00529b;
+            --accent: #00f2ff;
             --success: #28a745;
-            --bg: linear-gradient(180deg, #F0F2F5 0%, #051c33 100%);
+            --error: #dc3545;
+            --warning: #ffc107;
+            --text: #333;
+            --bg: #f4f7f9;
         }
+
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
         body {
-            margin: 0; padding: 0; font-family: 'Arial', sans-serif;
-            background: var(--bg); min-height: 100vh;
-            display: flex; align-items: center; justify-content: center;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
+
+        /* Barre de Progression Étape par Étape */
+        .stepper {
+            width: 100%;
+            background: white;
+            padding: 15px 10px;
+            display: flex;
+            justify-content: space-around;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .step { font-size: 10px; color: #ccc; text-align: center; font-weight: bold; text-transform: uppercase; flex: 1; }
+        .step.active { color: var(--secondary); border-bottom: 2px solid var(--secondary); padding-bottom: 5px; }
+        .step.done { color: var(--success); }
+
         .container {
-            width: 92%; max-width: 450px; background: white;
-            padding: 30px 20px; border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3); text-align: center;
+            width: 100%;
+            max-width: 800px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
         }
-        .agency-title { font-size: 26px; font-weight: 800; color: var(--primary); margin: 0; }
-        .ico-label { font-size: 14px; color: #666; margin: 5px 0 20px; font-weight: bold; }
-        .text-block { text-align: justify; line-height: 1.6; color: #444; font-size: 15px; margin-bottom: 20px; }
-        
-        /* Input Box */
-        .input-group { position: relative; margin-bottom: 20px; }
-        .input-group span { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); font-size: 20px; }
-        input { width: 100%; padding: 15px 15px 15px 50px; font-size: 17px; border: 2px solid #ddd; border-radius: 10px; }
-        
-        .btn-action { width: 100%; padding: 18px; background: var(--primary); color: white; border: none; border-radius: 50px; font-size: 17px; font-weight: bold; cursor: pointer; text-transform: uppercase; }
 
-        /* Crochet Officiel (SVG) */
-        .check-icon { width: 70px; height: 70px; background: var(--success); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; }
-        .check-icon svg { width: 40px; height: 40px; fill: white; }
+        /* Titre Prestige Animé */
+        .prestige-header { margin-bottom: 30px; }
+        .logo-sk { width: 60px; margin-bottom: 10px; }
+        .agency-title {
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, #051c33, #00529b, #051c33);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 3s linear infinite;
+        }
+        @keyframes shine { to { background-position: 200% center; } }
 
-        /* Loader */
-        .loader-box { display: none; margin-top: 20px; }
-        .track { width: 100%; height: 4px; background: #eee; position: relative; overflow: hidden; }
-        .dot { width: 30px; height: 100%; background: #00FF00; position: absolute; animation: scan 1.5s infinite; box-shadow: 0 0 10px #00FF00; }
-        @keyframes scan { 0% { left: -20%; } 100% { left: 120%; } }
-
-        .data-box { background: #f9f9f9; border: 1px solid #eee; border-radius: 10px; padding: 15px; margin: 20px 0; text-align: left; }
-        .row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dotted #ccc; font-size: 14px; }
-        .label { font-weight: bold; }
-        .val { font-weight: bold; color: var(--primary); }
+        /* Cartes et Inputs */
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .input-group { margin: 20px 0; }
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            text-transform: uppercase;
+            font-weight: bold;
+            outline: none;
+        }
         
-        .mail-link { color: #0066cc; text-decoration: underline; font-weight: bold; }
-        .hidden { display: none; }
+        .btn {
+            width: 100%;
+            padding: 18px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+
+        .status-msg { margin-top: 15px; font-size: 14px; min-height: 20px; }
+        .error { color: var(--error); font-weight: bold; }
+        .warning { color: var(--warning); font-weight: bold; }
+
+        /* Barre de Recherche (Progression continue) */
+        .search-container { display: none; }
+        .progress-bar-wrap {
+            width: 100%;
+            height: 12px;
+            background: #eee;
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        .progress-bar-fill {
+            width: 0%;
+            height: 100%;
+            background: var(--success);
+            transition: width 5.5s linear;
+        }
+
+        /* --- Nouveau Badge "Approuvé" Stylisé --- */
+        .status-badge-container {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin-bottom: 20px;
+            padding: 10px;
+        }
+        .status-circle {
+            width: 45px;
+            height: 45px;
+            background-color: var(--success);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            box-shadow: 0 0 15px rgba(40, 167, 69, 0.4);
+        }
+        .status-circle::after {
+            content: '✓';
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .status-text {
+            color: var(--success);
+            font-size: 24px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Résultats & Grille d'info */
+        .result-container { display: none; width: 100%; text-align: left; }
+        .info-grid {
+            background: #e9ecef;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 6px solid var(--success);
+        }
+        .info-item { font-size: 15px; margin-bottom: 8px; }
+        .info-label { font-weight: bold; color: var(--primary); margin-right: 5px; }
+
+        /* Scanner Laser */
+        .pdf-wrapper {
+            position: relative;
+            width: 100%;
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        iframe { width: 100%; height: 500px; border: none; }
+        .laser-line {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+            background: var(--accent);
+            box-shadow: 0 0 15px var(--accent), 0 0 30px var(--accent);
+            z-index: 10;
+            animation: scan 4s linear infinite;
+            display: none;
+        }
+        @keyframes scan {
+            0% { top: 0; }
+            50% { top: 100%; }
+            100% { top: 0; }
+        }
+
+        /* Panic Button & Overlay */
+        #panic-btn {
+            position: fixed;
+            bottom: 20px; right: 20px;
+            width: 55px; height: 55px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 28px; cursor: pointer; z-index: 1000;
+        }
+        .blurred { filter: blur(20px); pointer-events: none; }
+        #panic-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.95);
+            z-index: 999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 30px;
+        }
+
+        /* Lock Screen 24h */
+        #lock-screen {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; color: white;
+            z-index: 2000;
+            flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; padding: 40px;
+        }
+
+        .feedback-section { margin-top: 40px; display: none; }
+        textarea {
+            width: 100%; height: 130px; padding: 15px;
+            border-radius: 8px; border: 2px solid #ddd; margin-bottom: 15px;
+        }
     </style>
 </head>
-<body oncontextmenu="return false;">
+<body>
 
-    <div class="container">
-        <div id="page1">
-            <h1 class="agency-title">DOKLADSERVIS SK</h1>
-            <p class="ico-label">IČO: 51234567</p>
-            <div class="text-block">
-                Vitajte v oficiálnom overovacom portáli DOKLADSERVIS SK. Tento systém slúži na digitálnu autorizáciu a prístup k chráneným záznamom v centrálnom registri. Prosíme, zadajte váš unikátny identifikačný kód, ktorý vám bol pridelený. Všetky prenosy dát sú šifrované pre vašu bezpečnosť.
-            </div>
+    <div id="lock-screen">
+        <h1 style="color: var(--error); font-size: 40px;">🔴 PRÍSTUP ZABLOKOVANÝ</h1>
+        <p style="font-size: 18px;">Z bezpečnostných dôvodov bol váš prístup obmedzený na 24 hodín kvôli opakovaným chybným pokusom.</p>
+        <p style="color: #888;">Skúste to znova po uplynutí tohto času.</p>
+    </div>
+
+    <div id="panic-overlay" onclick="togglePanic()">
+        <h2 style="font-size: 30px;">🔒 ÚDAJE SÚ SKRYTÉ</h2>
+        <p style="font-size: 18px;">Údaje boli z bezpečnostných dôvodov maskované pre vašu ochranu.</p>
+        <p style="font-weight: bold; color: var(--secondary);">(Kliknutím sem stránku znova zobrazíte)</p>
+    </div>
+
+    <div class="stepper">
+        <div class="step active" id="s1">1. Autentifikácia</div>
+        <div class="step" id="s2">2. Vyhľadávanie</div>
+        <div class="step" id="s3">3. Certifikácia</div>
+    </div>
+
+    <div class="container" id="main-content">
+        <div class="prestige-header">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/d/d2/Coat_of_arms_of_Slovakia.svg" class="logo-sk" alt="Znak SK">
+            <div class="agency-title">DOKLADSERVIS SK</div>
+            <p style="font-size: 12px; color: #666; font-weight: bold;">ID RELÁCIE: <span id="session-id"></span></p>
+        </div>
+
+        <div id="auth-box" class="card">
+            <h3 style="text-transform: uppercase;">Vstupný Portál</h3>
+            <p style="font-size: 14px; color: #666;">Zadajte overovací kód pridelený vášmu dokumentu.</p>
+            
             <div class="input-group">
-                <span>🔒</span>
-                <input type="text" id="codeInput" placeholder="Zadajte kód...">
+                <input type="text" id="access-code" placeholder="SK-XXXX-XX-DS" spellcheck="false">
             </div>
-            <button class="btn-action" id="btnS" onclick="process()">AUTORIZOVAŤ PRÍSTUP</button>
-            <div class="loader-box" id="load">
-                <div class="track"><div class="dot"></div></div>
-                <p style="font-size:13px; font-weight:bold; margin-top:10px;">Prebieha vyhľadávanie v systéme...</p>
-            </div>
-            <p id="errMsg" style="color:red; font-weight:bold; font-size:13px; display:none; margin-top:15px;"></p>
+            <button class="btn" onclick="checkCode()">AUTENTIFIKOVAŤ PRÍSTUP</button>
+            <div id="status-msg" class="status-msg">Zostávajúce pokusy: <span id="tries-count">3</span></div>
         </div>
 
-        <div id="page2" class="hidden">
-            <div class="check-icon">
-                <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+        <div id="search-box" class="card search-container">
+            <h3 id="search-text">Inicializácia protokolu...</h3>
+            <div class="progress-bar-wrap">
+                <div class="progress-bar-fill" id="pb"></div>
             </div>
-            <h2 style="color:var(--primary); margin:0;">ZÁZNAM NÁJDENÝ</h2>
-            <div class="data-box">
-                <div class="row"><span class="label">Meno:</span> <span class="val">Zuzana Nováková</span></div>
-                <div class="row"><span class="label">ID konania:</span> <span class="val">SK-DS-2025-8412</span></div>
-                <div class="row"><span class="label">Miesto:</span> <span class="val">Bratislava, SK</span></div>
-                <div class="row"><span class="label">Dátum:</span> <span class="val">24.12.2025</span></div>
-                <div class="row" style="border:none;"><span class="label">Stav:</span> <span class="val" style="color:var(--success)">SCHVÁLENÉ</span></div>
-            </div>
-            <a href="Potvrdenie_SK.pdf" target="_blank" style="display:block; margin-bottom:20px; font-weight:bold; color:#0066cc;">ZOBRAZIŤ ATESTÁCIU (PDF)</a>
-            <button class="btn-action" style="width:auto; padding:12px 30px;" onclick="goFinal()">POKRAČOVAŤ</button>
+            <p style="font-size: 13px; color: #888;">Prebieha bezpečná synchronizácia s databázou...</p>
         </div>
 
-        <div id="page3" class="hidden">
-            <h2 style="font-size:20px;">POTVRDENIE ZHODY</h2>
-            <div class="text-block">
-                Vážená pani Nováková, proces overenia vašej dokumentácie bol úspešne dokončený. Prosíme vás, aby ste nás po tomto overení informovali o vašom súhlase. Následne vám bude vysvetlený ďalší administratívny postup pre doručenie vašich dokladov. Ďakujeme za vašu dôveru.
+        <div id="result-box" class="result-container">
+            
+            <div class="status-badge-container">
+                <div class="status-circle"></div>
+                <div class="status-text">SCHVÁLENÉ</div>
             </div>
-            <div class="text-block" style="border-top: 1px solid #eee; padding-top:15px;">
-                V prípade potreby akejkoľvek zmeny alebo opravy v údajoch nás, prosím, kontaktujte na našej oficiálnej adrese:<br><br>
-                <a href="mailto:skdocumenta@gmail.com" class="mail-link">skdocumenta@gmail.com</a>
+            
+            <div class="info-grid">
+                <div class="info-item"><span class="info-label">Identifikátor (LID):</span> SK/DS-2026-B812</div>
+                <div class="info-item"><span class="info-label">Držiteľ záznamu:</span> <span>Dave [Príklad Meno]</span></div>
+                <div class="info-item"><span class="info-label">Overovací kód:</span> <span id="display-code"></span></div>
+                <div class="info-item"><span class="info-label">Dátum overenia:</span> <span id="current-date"></span></div>
+                <div class="info-item"><span class="info-label">Stav systému:</span> <span style="color: var(--success); font-weight: bold;">AKTÍVNY</span></div>
             </div>
-            <p style="font-size:11px; color:#999; margin-top:30px;">DOKLADSERVIS SK © 2025</p>
+
+            <div class="pdf-wrapper">
+                <div class="laser-line" id="laser"></div>
+                <iframe src="moje_dokumenty/Potvrdenie_SK.pdf#toolbar=0" id="pdf-frame"></iframe>
+            </div>
+
+            <div class="feedback-section" id="feedback-box">
+                <hr style="border: 0; border-top: 1px solid #ddd; margin: 30px 0;">
+                <h3 style="text-transform: uppercase;">Záverečná Validácia</h3>
+                <p style="font-size: 14px;">Môžete odoslať svoj názor alebo požiadať o zmenu údajov:</p>
+                <form action="https://formspree.io/f/xzddgpdn" method="POST">
+                    <input type="hidden" name="Kód_Klienta" id="hidden-code">
+                    <textarea name="Správa_Klienta" placeholder="Tu napíšte svoj komentár..." required></textarea>
+                    <button type="submit" class="btn" style="background: var(--success);">ODOSLAŤ SPRÁVU</button>
+                </form>
+            </div>
         </div>
     </div>
 
+    <div id="panic-btn" onclick="togglePanic()" title="Skryť údaje">👁️</div>
+
     <script>
-        function process() {
-            const c = document.getElementById('codeInput').value.trim();
-            const err = document.getElementById('errMsg');
-            const load = document.getElementById('load');
-            const btn = document.getElementById('btnS');
+        const VALID_CODE = "SK-2025-00-DS"; 
+        let tries = localStorage.getItem('doklad_tries') ? parseInt(localStorage.getItem('doklad_tries')) : 3;
+        const lockTime = localStorage.getItem('doklad_lock');
 
-            btn.style.display = 'none';
-            err.style.display = 'none';
-            load.style.display = 'block';
-
-            setTimeout(() => {
-                if(c === 'SK-2025-00-DS') {
-                    document.getElementById('page1').classList.add('hidden');
-                    document.getElementById('page2').classList.remove('hidden');
-                } else {
-                    load.style.display = 'none';
-                    btn.style.display = 'block';
-                    err.innerText = "Systém nenašiel žiadny záznam priradený k tomuto kódu. Skontrolujte údaje a skúste to znova.";
-                    err.style.display = 'block';
-                }
-            }, 5000);
+        // Sécurité 24h
+        if (lockTime && new Date().getTime() < parseInt(lockTime)) {
+            document.getElementById('lock-screen').style.display = 'flex';
+            document.getElementById('main-content').style.display = 'none';
         }
-        function goFinal() {
-            document.getElementById('page2').classList.add('hidden');
-            document.getElementById('page3').classList.remove('hidden');
+
+        document.getElementById('tries-count').innerText = tries;
+        document.getElementById('session-id').innerText = "SK-" + Math.random().toString(36).substring(2, 8).toUpperCase();
+        document.getElementById('current-date').innerText = new Date().toLocaleDateString('sk-SK');
+
+        function checkCode() {
+            const input = document.getElementById('access-code').value.trim().toUpperCase();
+            const msg = document.getElementById('status-msg');
+
+            if (input === VALID_CODE) {
+                startSearch();
+            } else {
+                tries--;
+                localStorage.setItem('doklad_tries', tries);
+                document.getElementById('tries-count').innerText = tries;
+
+                if (tries === 2) {
+                    msg.innerHTML = `<span class="warning">Systém nenašiel žiadny záznam priradený k tomuto kódu. Pokus bol zaznamenaný. Pozor! Zostávajú 2 pokusy.</span>`;
+                } else if (tries === 1) {
+                    msg.innerHTML = `<span class="error">POZOR! Nesprávny kód. Zostáva už len posledný pokus pred zablokovaním na 24h.</span>`;
+                } else {
+                    const lockUntil = new Date().getTime() + (24 * 60 * 60 * 1000);
+                    localStorage.setItem('doklad_lock', lockUntil);
+                    location.reload();
+                }
+            }
+        }
+
+        function startSearch() {
+            document.getElementById('auth-box').style.display = 'none';
+            document.getElementById('search-container');
+            const searchBox = document.getElementById('search-box');
+            searchBox.style.display = 'block';
+            
+            document.getElementById('s1').classList.add('done');
+            document.getElementById('s1').classList.remove('active');
+            document.getElementById('s2').classList.add('active');
+            
+            const pb = document.getElementById('pb');
+            const st = document.getElementById('search-text');
+            
+            setTimeout(() => { pb.style.width = '100%'; }, 100);
+            setTimeout(() => { st.innerText = "Prebieha vyhľadávanie v systéme..."; }, 1500);
+            setTimeout(() => { st.innerText = "Verifikácia certifikátu..."; }, 3500);
+            
+            setTimeout(() => { showResults(); }, 5700);
+        }
+
+        function showResults() {
+            document.getElementById('search-box').style.display = 'none';
+            document.getElementById('result-box').style.display = 'block';
+            document.getElementById('feedback-box').style.display = 'block';
+            document.getElementById('s2').classList.add('done');
+            document.getElementById('s2').classList.remove('active');
+            document.getElementById('s3').classList.add('active');
+            document.getElementById('display-code').innerText = VALID_CODE;
+            document.getElementById('hidden-code').value = VALID_CODE;
+            document.getElementById('laser').style.display = 'block';
+        }
+
+        function togglePanic() {
+            const mc = document.getElementById('main-content');
+            const overlay = document.getElementById('panic-overlay');
+            if (overlay.style.display === 'flex') {
+                overlay.style.display = 'none';
+                mc.classList.remove('blurred');
+            } else {
+                overlay.style.display = 'flex';
+                mc.classList.add('blurred');
+            }
         }
     </script>
 </body>
